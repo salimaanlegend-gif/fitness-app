@@ -1,0 +1,296 @@
+.subscription-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  animation: fadeIn 0.6s ease-in;
+}
+
+.header h1 {
+  font-size: 3em;
+  margin: 0;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header p {
+  font-size: 1.2em;
+  color: #aaa;
+  margin-top: 10px;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.plan-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 2px solid;
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.plan-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.plan-card h2 {
+  font-size: 2em;
+  margin: 0 0 20px 0;
+}
+
+.price {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.price .amount {
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+.price .duration {
+  font-size: 1em;
+  color: #aaa;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0;
+  text-align: left;
+}
+
+.features li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1em;
+}
+
+.features li:last-child {
+  border-bottom: none;
+}
+
+.subscribe-button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.subscribe-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.subscribe-button:active {
+  transform: scale(0.98);
+}
+
+/* Payment Section */
+.payment-section {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+  backdrop-filter: blur(10px);
+}
+
+.payment-section h2 {
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+.back-button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.submit-button {
+  padding: 15px;
+  background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(74, 144, 226, 0.4);
+}
+
+/* QR Code Section */
+.qr-section {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 12px;
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.qr-section canvas {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Bank Details */
+.bank-details {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid #F5A623;
+  text-align: left;
+  margin: 20px 0;
+}
+
+.bank-details h4 {
+  margin-top: 0;
+  color: #F5A623;
+}
+
+.bank-details p {
+  margin: 10px 0;
+  font-size: 0.95em;
+}
+
+.bank-details strong {
+  color: #fff;
+}
+
+/* Confirmation Message */
+.confirmation-message {
+  background-color: rgba(76, 175, 80, 0.2);
+  border: 1px solid rgba(76, 175, 80, 0.5);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+  color: #a8e6a8;
+}
+
+.confirmation-message p {
+  margin: 10px 0;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #888;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .subscription-container {
+    padding: 20px 10px;
+  }
+
+  .header h1 {
+    font-size: 2em;
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-section {
+    padding: 20px;
+  }
+}
