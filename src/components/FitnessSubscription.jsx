@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import QRCode from "qrcode.react";
 
 export function FitnessSubscription() {
   const [selectedTier, setSelectedTier] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("payfast");
 
   const tiers = [
     {
@@ -40,6 +40,48 @@ export function FitnessSubscription() {
     accountHolder: "Salman",
     accountNumber: "2590943039",
     branchCode: "470010",
+  };
+
+  // Payfast Configuration
+  const payfastConfig = {
+    merchantId: "10029282", // Replace with your Payfast merchant ID
+    merchantKey: "nqnj27y4dp965g", // Replace with your Payfast merchant key
+    returnUrl: "https://salimaanlegend-gif.github.io/fitness-app",
+    cancelUrl: "https://salimaanlegend-gif.github.io/fitness-app",
+    notifyUrl: "https://your-server.com/notify", // Backend URL for payment notifications
+  };
+
+  const handlePayfastPayment = (tier) => {
+    const payfastData = {
+      merchant_id: payfastConfig.merchantId,
+      merchant_key: payfastConfig.merchantKey,
+      return_url: payfastConfig.returnUrl,
+      cancel_url: payfastConfig.cancelUrl,
+      notify_url: payfastConfig.notifyUrl,
+      amount: tier.price.toFixed(2),
+      item_name: `${tier.name} Fitness Subscription`,
+      item_description: `${tier.name} tier - Monthly subscription`,
+      reference: `FIT-${tier.id}-${Date.now()}`,
+      email_address: "payments@fitnessapp.com",
+      custom_int1: tier.price,
+      custom_str1: tier.id,
+    };
+
+    // Create form and submit to Payfast
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://www.payfast.co.za/eng/process";
+
+    Object.keys(payfastData).forEach((key) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = payfastData[key];
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
   };
 
   return (
@@ -94,76 +136,111 @@ export function FitnessSubscription() {
               Subscribe to {selectedTier.name} - R{selectedTier.price}/month
             </h2>
 
-            {/* Bank Details */}
+            {/* Payment Method Selection */}
             <div style={styles.section}>
-              <h3 style={styles.sectionTitle}>Bank Details</h3>
-              <table style={styles.table}>
-                <tbody>
-                  <tr>
-                    <td style={styles.tableLabel}>Bank:</td>
-                    <td style={styles.tableValue}>{bankDetails.bank}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.tableLabel}>Account Name:</td>
-                    <td style={styles.tableValue}>{bankDetails.accountHolder}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.tableLabel}>Account Number:</td>
-                    <td style={styles.tableValue}>{bankDetails.accountNumber}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.tableLabel}>Branch Code:</td>
-                    <td style={styles.tableValue}>{bankDetails.branchCode}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.tableLabel}>Amount:</td>
-                    <td style={{ ...styles.tableValue, color: "#ff6b00", fontWeight: "bold" }}>
-                      R{selectedTier.price}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            {/* QR Code */}
-            <div style={styles.section}>
-              <h3 style={styles.sectionTitle}>Quick Transfer QR Code</h3>
-              <p style={styles.hint}>
-                Scan with your banking app (Capitec or any bank)
-              </p>
-              <div style={styles.qrContainer}>
-                <QRCode
-                  value={`${bankDetails.bank}|${bankDetails.accountHolder}|${bankDetails.accountNumber}|${bankDetails.branchCode}|${selectedTier.price}`}
-                  size={280}
-                  level="H"
-                  includeMargin={true}
-                />
+              <h3 style={styles.sectionTitle}>Choose Payment Method</h3>
+              <div style={styles.paymentMethods}>
+                <label style={styles.methodLabel}>
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="payfast"
+                    checked={paymentMethod === "payfast"}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  <span style={styles.methodName}>💳 Payfast (Secure)</span>
+                </label>
+                <label style={styles.methodLabel}>
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="bank"
+                    checked={paymentMethod === "bank"}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  <span style={styles.methodName}>🏦 Direct Bank Transfer</span>
+                </label>
               </div>
             </div>
 
-            {/* Instructions */}
-            <div style={styles.section}>
-              <h3 style={styles.sectionTitle}>How to Subscribe</h3>
-              <ol style={styles.instructions}>
-                <li>Open your banking app (Capitec, FNB, Standard Bank, etc.)</li>
-                <li>Select "Send Money" or "New Transfer"</li>
-                <li>
-                  Enter account number: <strong>{bankDetails.accountNumber}</strong>
-                </li>
-                <li>
-                  Enter amount: <strong>R{selectedTier.price}</strong>
-                </li>
-                <li>
-                  Use reference: <strong>Your username or email</strong> (so we can activate your subscription)
-                </li>
-                <li>Confirm and send the payment</li>
-                <li>Subscription activates within 1-2 business days</li>
-              </ol>
-            </div>
+            {/* Payfast Payment */}
+            {paymentMethod === "payfast" && (
+              <div style={styles.section}>
+                <h3 style={styles.sectionTitle}>Secure Payment via Payfast</h3>
+                <p style={styles.hint}>
+                  Click below to proceed to secure payment gateway
+                </p>
+                <button
+                  style={styles.payfastBtn}
+                  onClick={() => handlePayfastPayment(selectedTier)}
+                >
+                  🔒 Pay R{selectedTier.price} via Payfast
+                </button>
+                <p style={styles.payfastNote}>
+                  ✓ Secure • ✓ Multiple payment methods • ✓ Instant confirmation
+                </p>
+              </div>
+            )}
+
+            {/* Bank Transfer Payment */}
+            {paymentMethod === "bank" && (
+              <>
+                {/* Bank Details */}
+                <div style={styles.section}>
+                  <h3 style={styles.sectionTitle}>Bank Details</h3>
+                  <table style={styles.table}>
+                    <tbody>
+                      <tr>
+                        <td style={styles.tableLabel}>Bank:</td>
+                        <td style={styles.tableValue}>{bankDetails.bank}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.tableLabel}>Account Name:</td>
+                        <td style={styles.tableValue}>{bankDetails.accountHolder}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.tableLabel}>Account Number:</td>
+                        <td style={styles.tableValue}>{bankDetails.accountNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.tableLabel}>Branch Code:</td>
+                        <td style={styles.tableValue}>{bankDetails.branchCode}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.tableLabel}>Amount:</td>
+                        <td style={{ ...styles.tableValue, color: "#ff6b00", fontWeight: "bold" }}>
+                          R{selectedTier.price}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Instructions */}
+                <div style={styles.section}>
+                  <h3 style={styles.sectionTitle}>How to Subscribe</h3>
+                  <ol style={styles.instructions}>
+                    <li>Open your banking app (Capitec, FNB, Standard Bank, etc.)</li>
+                    <li>Select "Send Money" or "New Transfer"</li>
+                    <li>
+                      Enter account number: <strong>{bankDetails.accountNumber}</strong>
+                    </li>
+                    <li>
+                      Enter amount: <strong>R{selectedTier.price}</strong>
+                    </li>
+                    <li>
+                      Use reference: <strong>Your email or username</strong>
+                    </li>
+                    <li>Confirm and send the payment</li>
+                    <li>Subscription activates within 1-2 business days</li>
+                  </ol>
+                </div>
+              </>
+            )}
 
             {/* Important Notice */}
             <div style={styles.notice}>
-              <strong>📌 Important:</strong> Make sure to use your username or email as the payment reference so we can activate your {selectedTier.name} subscription immediately after receiving payment.
+              <strong>📌 Important:</strong> After payment, we'll verify and activate your {selectedTier.name} subscription within 24 hours.
             </div>
 
             {/* Support */}
@@ -314,6 +391,44 @@ const styles = {
     color: "#0066cc",
     marginBottom: "15px",
   },
+  paymentMethods: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+  methodLabel: {
+    display: "flex",
+    alignItems: "center",
+    padding: "12px",
+    backgroundColor: "white",
+    border: "1px solid #ddd",
+    borderRadius: "6px",
+    cursor: "pointer",
+    transition: "all 0.3s",
+  },
+  methodName: {
+    marginLeft: "10px",
+    fontSize: "14px",
+    fontWeight: "bold",
+  },
+  payfastBtn: {
+    width: "100%",
+    padding: "15px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    backgroundColor: "#003da5",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    marginBottom: "10px",
+    transition: "background 0.3s",
+  },
+  payfastNote: {
+    fontSize: "12px",
+    color: "#666",
+    textAlign: "center",
+  },
   table: {
     width: "100%",
     borderCollapse: "collapse",
@@ -332,17 +447,6 @@ const styles = {
     borderBottom: "1px solid #eee",
     fontFamily: "monospace",
     color: "#555",
-  },
-  qrContainer: {
-    textAlign: "center",
-    padding: "20px",
-    backgroundColor: "white",
-    borderRadius: "8px",
-  },
-  hint: {
-    fontSize: "12px",
-    color: "#666",
-    marginBottom: "15px",
   },
   instructions: {
     lineHeight: "1.8",
