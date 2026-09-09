@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FitnessSubscription } from "./components/FitnessSubscription";
+import { DigitalClock } from "./components/DigitalClock";
 import "./App.css";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [currentPage, setCurrentPage] = useState("home");
 
   if (!isLoggedIn) {
     return (
@@ -37,6 +39,20 @@ export default function App() {
     <div className="app">
       <nav className="navbar">
         <h1>🏋️ Fitness App</h1>
+        <div className="nav-links">
+          <button
+            onClick={() => setCurrentPage("home")}
+            className={currentPage === "home" ? "nav-btn active" : "nav-btn"}
+          >
+            Subscriptions
+          </button>
+          <button
+            onClick={() => setCurrentPage("clock")}
+            className={currentPage === "clock" ? "nav-btn active" : "nav-btn"}
+          >
+            World Clock
+          </button>
+        </div>
         <div className="user-info">
           <span>Welcome, {username}!</span>
           <button onClick={() => setIsLoggedIn(false)} className="logout-btn">
@@ -45,7 +61,8 @@ export default function App() {
         </div>
       </nav>
 
-      <FitnessSubscription />
+      {currentPage === "home" && <FitnessSubscription />}
+      {currentPage === "clock" && <DigitalClock />}
     </div>
   );
 }
